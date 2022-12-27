@@ -8,19 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: MovieDiscoverViewModel
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List {
+                ForEach(viewModel.movieDiscover.movies, id: \.self) {
+                    movie in
+                    NavigationLink(destination: MovieDetailView(movieID: movie.id).environmentObject(MovieDetailViewModel())) {
+                        MovieListItemView(movie: movie)
+                    }
+                }
+            } //: LIST
+        }.onAppear{
+            viewModel.getAll(id: 1)
         }
-        .padding()
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView().environmentObject(MovieDiscoverViewModel())
     }
 }
+
