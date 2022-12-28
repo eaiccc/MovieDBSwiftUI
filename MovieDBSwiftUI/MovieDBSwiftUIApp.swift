@@ -11,7 +11,7 @@ import SwiftUI
 struct MovieDBSwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(MovieDiscoverViewModel())
+            ContentView().environmentObject(TrendViewModel())
         }
     }
 }

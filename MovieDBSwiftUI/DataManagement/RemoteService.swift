@@ -37,6 +37,17 @@ class RemoteService: IDataService {
         return components.string!
     }
     
+    func trendRequest(mediaType: String, timeWindow: String) -> String {
+        var components = URLComponents()
+        components.scheme = "https"
+        components.host = "api.themoviedb.org"
+        components.path = "/3/trending/\(mediaType)/\(timeWindow)"
+
+        components.queryItems = [
+            URLQueryItem(name: "api_key", value: APIKey)
+        ]
+        return components.string!
+    }
     
     func getAllData(postID: Int, completion: @escaping (MovieDiscover) -> Void) {
         if let url = URL(string: movieDisoverRequest) {
@@ -69,7 +80,6 @@ class RemoteService: IDataService {
                         print(content)
                         let response = try decoder.decode(MovieDetail.self, from: data)
                         print("response \(response)")
-                        
                         completion(response)
                                     
                     }catch(let error) {
@@ -85,6 +95,19 @@ class RemoteService: IDataService {
             }.resume()
         }
     }
-     
+    
+    func getTrend(mediaType: String, timeWindow: String, completion: @escaping (TrendModel) -> Void) {
+        if let url = URL(string: trendRequest(mediaType: mediaType, timeWindow: timeWindow)) {
+            URLSession.shared.dataTask(with: URLRequest(url: url)) { data, res, error in
+                if let error {
+                    print(error)
+                    return
+                }
+                if let data, let list = try? JSONDecoder().decode(TrendModel.self, from: data){
+                    completion(list)
+                }
+            }.resume()
+        }
+    }
 }
 

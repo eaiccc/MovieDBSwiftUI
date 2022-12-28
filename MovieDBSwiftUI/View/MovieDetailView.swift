@@ -33,14 +33,15 @@ struct MovieDetailView: View {
                             Color.gray.opacity(0.1)
                         }
                     }
-                    Text("\(viewModel.movieDetail.title!)")
-                        .multilineTextAlignment(.center)
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                        .foregroundColor(.primary)
-                        .padding(.vertical, 8)
-                        .background(Color.accentColor.frame(height: 6).offset(y:24))
-                    
+                    if let title = viewModel.movieDetail.title {
+                        Text("\(title)")
+                            .multilineTextAlignment(.center)
+                            .font(.largeTitle)
+                            .fontWeight(.heavy)
+                            .foregroundColor(.primary)
+                            .padding(.vertical, 8)
+                            .background(Color.accentColor.frame(height: 6).offset(y:24))
+                    }
                     Group {
                         HStack {
                             Image(systemName: "info.circle").foregroundColor(.accentColor).imageScale(.large)

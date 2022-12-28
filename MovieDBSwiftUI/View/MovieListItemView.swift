@@ -10,7 +10,7 @@ import SwiftUI
 struct MovieListItemView: View {
     
     // MARK: - PROPERTIES
-    let movie: Movie
+    let movie: MovieModel
     
     // MARK: - BODY
     
@@ -38,9 +38,17 @@ struct MovieListItemView: View {
             .frame(width: 90, height: 90)
             .cornerRadius(12)
             VStack(alignment: .leading) {
-                Text(movie.title).font(.title2).fontWeight(.heavy).foregroundColor(.accentColor).lineLimit(2)
+                if let title = movie.title {
+                    Text(title).font(.title2).fontWeight(.heavy).foregroundColor(.accentColor).lineLimit(2)
+                }else if let name = movie.name {
+                    Text(name).font(.title2).fontWeight(.heavy).foregroundColor(.accentColor).lineLimit(2)
+                }
                 HStack {
-                    Text(movie.releaseDate).font(.footnote)
+                    if let releaseDate = movie.releaseDate {
+                        Text(releaseDate).font(.footnote)
+                    }else if let airDate = movie.firstAirDate {
+                        Text(airDate).font(.footnote)
+                    }
                     Text("Star: \(String(movie.voteAverage))").font(.footnote).foregroundColor(.red)
                     
                 }

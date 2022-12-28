@@ -9,5 +9,6 @@ import Foundation
 
 protocol IDataService {
     func getAllData(postID: Int, completion: @escaping(MovieDiscover) -> Void)
-    func getMoiveDetail(ID: Int, completion: @escaping (MovieDetail) -> Void) 
+    func getMoiveDetail(ID: Int, completion: @escaping (MovieDetail) -> Void)
+    func getTrend(mediaType: String, timeWindow: String, completion: @escaping (TrendModel) -> Void)
 }

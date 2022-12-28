@@ -25,7 +25,7 @@ class JSONFileService: IDataService {
         completion(result)
     }
 
-    func getMovie() -> [Movie] {
+    func getMovie() -> [MovieModel] {
         let result = MovieDiscover()
         let decoder = JSONDecoder()
         if let data = try? Data(contentsOf: URL(filePath: filePath)), let movieDiscover = try? decoder.decode(MovieDiscover.self, from: data) {
@@ -47,6 +47,27 @@ class JSONFileService: IDataService {
                 //print("json: \(content)")
                 let response = try decoder.decode(MovieDetail.self, from: data)
                 //print("response \(response)")
+                result = response
+                            
+            }catch {
+                print("decoder error:\(error)")
+            }
+        }
+        completion(result)
+    }
+    
+    func getTrend(mediaType: String, timeWindow: String, completion: @escaping (TrendModel) -> Void) {
+        var result = TrendModel()
+        let src = Bundle.main.path(forResource: "trend", ofType: "json")!
+        if let data = try? Data(contentsOf: URL(filePath: src)){
+            
+            do {
+                let decoder = JSONDecoder()
+                //decoder.keyDecodingStrategy = .convertFromSnakeCase
+                let content = String(data: data, encoding: .utf8) ?? ""
+                print("json: \(content)")
+                let response = try decoder.decode(TrendModel.self, from: data)
+                print("response \(response)")
                 result = response
                             
             }catch {

@@ -8,8 +8,8 @@
 import SwiftUI
 
 final class MovieDiscoverViewModel: ObservableObject {
-    //lazy var service: IDataService = JSONFileService()
-    lazy var service: IDataService = RemoteService()
+    lazy var service: IDataService = JSONFileService()
+    //lazy var service: IDataService = RemoteService()
     @Published var movieDiscover = MovieDiscover()
     func getAll(id: Int) {
         service.getAllData(postID: id) { result in

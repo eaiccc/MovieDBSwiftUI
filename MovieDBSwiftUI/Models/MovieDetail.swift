@@ -15,7 +15,7 @@ import Foundation
 struct MovieDetail: Codable, Hashable {
     let adult: Bool?
     let backdropPath: String?
-    let belongsToCollection: String?
+    let belongsToCollection: BelongsToCollection?
     let budget: Int?
     let genres: [Genre]?
     let homepage: String?
@@ -57,7 +57,7 @@ struct MovieDetail: Codable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         adult = try values.decodeIfPresent(Bool.self, forKey: .adult)
         backdropPath = try values.decodeIfPresent(String.self, forKey: .backdropPath)
-        belongsToCollection = try values.decodeIfPresent(String.self, forKey: .belongsToCollection)
+        belongsToCollection = try values.decodeIfPresent(BelongsToCollection.self, forKey: .belongsToCollection)
         budget = try values.decodeIfPresent(Int.self, forKey: .budget)
         genres = try values.decodeIfPresent([Genre].self, forKey: .genres)
         homepage = try values.decodeIfPresent(String.self, forKey: .homepage)
@@ -87,7 +87,7 @@ extension MovieDetail {
     init() {
         adult = false
         backdropPath = ""
-        belongsToCollection = ""
+        belongsToCollection = BelongsToCollection()
         budget = 0
         genres = [Genre]()
         homepage = ""
@@ -199,5 +199,26 @@ extension Encodable {
             print(error.localizedDescription)
             return nil
         }
+    }
+}
+
+// MARK: - BelongsToCollection
+struct BelongsToCollection: Codable, Hashable {
+    let id: Int?
+    let name, posterPath, backdropPath: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, name
+        case posterPath
+        case backdropPath
+    }
+}
+
+extension BelongsToCollection {
+    init() {
+        id = 0
+        name = ""
+        posterPath = ""
+        backdropPath = ""
     }
 }
