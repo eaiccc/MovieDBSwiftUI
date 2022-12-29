@@ -19,24 +19,33 @@ struct MovieListItemView: View {
         let photoUrl = (path != nil ) ? URL.getListPhotoURL(path!) : nil
         
         HStack(alignment: .center, spacing: 16){
-            AsyncImage(url: photoUrl){ phase in
-                switch phase {
-                case .empty:
-                    Color.purple.opacity(0.1)
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                case .failure(_):
-                    Image(systemName: "exclamationmark.icloud")
-                        .resizable()
-                        .scaledToFit()
-                @unknown default:
-                    Image(systemName: "exclamationmark.icloud")
+            ZStack {
+                AsyncImage(url: photoUrl){ phase in
+                    switch phase {
+                    case .empty:
+                        Color.purple.opacity(0.1)
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    case .failure(_):
+                        Image(systemName: "exclamationmark.icloud")
+                            .resizable()
+                            .scaledToFit()
+                    @unknown default:
+                        Image(systemName: "exclamationmark.icloud")
+                    }
                 }
+                .frame(width: 90, height: 90)
+                .cornerRadius(12)
+                
+                ZStack {
+                    Circle()
+                        .fill(Color.mint).shadow(radius: 1)
+                    Text(String(format: "%.1f", movie.voteAverage)).foregroundColor(.brown)
+                }.frame(width: 40, height: 40, alignment: .bottomTrailing).offset(x:30, y:30)
+                
             }
-            .frame(width: 90, height: 90)
-            .cornerRadius(12)
             VStack(alignment: .leading) {
                 if let title = movie.title {
                     Text(title).font(.title2).fontWeight(.heavy).foregroundColor(.accentColor).lineLimit(2)
@@ -49,7 +58,6 @@ struct MovieListItemView: View {
                     }else if let airDate = movie.firstAirDate {
                         Text(airDate).font(.footnote)
                     }
-                    Text("Star: \(String(movie.voteAverage))").font(.footnote).foregroundColor(.red)
                     
                 }
                 Text(movie.overview).font(.footnote).multilineTextAlignment(.leading).lineLimit(3).padding(.trailing,8).foregroundColor(.gray)
